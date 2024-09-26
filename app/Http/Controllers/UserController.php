@@ -39,7 +39,6 @@ class UserController extends Controller
             $user->where('level_id', $request->level_id);
         }
         
-        
         return DataTables::of($user)
             // menambahkan kolom index / no urut (default nama kolom: DT_RowIndex)
             ->addIndexColumn()
