@@ -34,12 +34,13 @@ class SupplierController extends Controller
     // Ambil data supplier dalam bentuk json untuk datatables
     public function list(Request $request)
     {
-        $suppliers = SupplierModel::select('supplier_id', 'supplier_kode', 'supplier_nama', 'supplier_alamat');
+        $suppliers = KategoriModel::select('supplier_id', 'supplier_kode', 'supplier_nama', 'supplier_alamat');
 
         return DataTables::of($suppliers)
             ->addIndexColumn() // menambahkan kolom index / no urut (default nama kolom: DT_RowIndex)
             ->addColumn('aksi', function ($supplier) { // menambahkan kolom aksi
-                $btn = '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->supplier_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn = '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->supplier_id . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->supplier_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->supplier_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
@@ -189,7 +190,7 @@ class SupplierController extends Controller
         // Cek apakah request berupa ajax
         if($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'supplier_kode' => 'required|string|max:10|unique:m_supplier,supplier_kode',
+                'supplier_kode' => 'required|string|max:10',
                 'supplier_nama' => 'required|string|max:100',
                 'supplier_alamat' => 'required|string|max:100',
             ];
@@ -234,7 +235,7 @@ class SupplierController extends Controller
         // Cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'supplier_kode' => 'required|string|max:10|unique:m_supplier,supplier_kode,' . $id . ',supplier_id',
+                'supplier_kode' => 'required|string|max:10',
                 'supplier_nama' => 'required|string|max:100',
                 'supplier_alamat' => 'required|string|max:100',
             ];
