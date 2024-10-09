@@ -1,36 +1,43 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     public function login()
-    {
-        return view('auth.login'); // Menampilkan halaman login
-    }
+        {
+            if(Auth::check()){ // jika sudah login, maka redirect ke halaman home
+            return redirect('/');
+            }
+            return view('auth.login');
+        }
 
     public function postlogin(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
+            if($request->ajax() || $request->wantsJson()){
+                $credentials = $request->only('username', 'password');
+            if (Auth::attempt($credentials)) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Login Berhasil',
+                    'redirect' => url('/')
         ]);
-
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            return redirect()->intended('user')->with('success', 'Login successful!');
         }
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Login Gagal'
+                    ]);
+                    }
+                return redirect('login');
+                }
 
-        return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
-        ]);
-    }
-
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout(); 
-        return redirect()->route('login')->with('success', 'Logout successful!');
+            Auth::logout();
+            
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect('login');
     }
 }
