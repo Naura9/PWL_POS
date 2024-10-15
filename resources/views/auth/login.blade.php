@@ -59,6 +59,11 @@
                         </div>
                         <!-- /.col -->
                     </div>
+                    <br>
+                    <p class="mb-1 text-center">
+                        <a>Belum mempunyai akun?</a>
+                        <a href="{{ url('register') }}">Registrasi</a>
+                    </p>
                 </form>
             </div>
             <!-- /.card-body -->
@@ -86,55 +91,62 @@
             }
         });
 
-        $(document).ready(function() {
-            $("#form-login").validate({
-                rules: {
-                    username: { required: true, minlength: 4, maxlength: 20 },
-                    password: { required: true, minlength: 5, maxlength: 20 }
+    $(document).ready(function () {
+        $("#form-login").validate({
+            rules: {
+                username: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 20
                 },
-                submitHandler: function(form) {
-                    // Ketika valid, maka bagian ini akan dijalankan
-                    $.ajax({
-                        url: form.action,
-                        type: form.method,
-                        data: $(form).serialize(),
-                        success: function(response) {
-                            if (response.status) { // jika sukses
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil',
-                                    text: response.message
-                                }).then(function() {
-                                    window.location = response.redirect;
-                                });
-                            } else { // jika error
-                                $('.error-text').text('');
-                                $.each(response.msgField, function(prefix, val) {
-                                    $('#error-' + prefix).text(val[0]);
-                                });
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Terjadi Kesalahan',
-                                    text: response.message
-                                });
-                            }
-                        }
-                    });
-                    return false;
-                },
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.input-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
+                password: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 20
                 }
-            });
+            },
+            submitHandler: function (form) { // ketika valid, maka bagian yg akan dijalankan
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        if (response.status) { // jika sukses
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.message,
+                            }).then(function () {
+                                window.location = response.redirect;
+                            });
+                        } else { // jika error
+                            $('.error-text').text('');
+                            $.each(response.msgField, function (prefix, val) {
+                                $('#error-' + prefix).text(val[0]);
+                            });
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Terjadi Kesalahan',
+                                text: response.message
+                            });
+                        }
+                    }
+                });
+                return false;
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.input-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
         });
-    </script>
+    });
+</script>
 </body>
 </html>
