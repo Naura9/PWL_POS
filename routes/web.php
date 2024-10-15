@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelController;
@@ -15,6 +16,11 @@ Route::pattern('id', '[0-9]+'); // Memastikan parameter 'id' hanya angka
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
 Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
+
+// Route untuk register
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
 
 // Semua route yang memerlukan autentikasi
 Route::middleware(['auth'])->group(function () {  
@@ -110,5 +116,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('barang/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);
         Route::delete('barang/{id}', [BarangController::class, 'destroy']);
         Route::get('barang/{id}/show_ajax', [BarangController::class, 'show_ajax']);
+        Route::get('barang/import', [BarangController::class, 'import']);
+        Route::post('barang/import_ajax', [BarangController::class, 'import_ajax']);
     });
 });
