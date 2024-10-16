@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('user/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);
         Route::delete('user/{id}/delete_ajax', [UserController::class, 'delete_ajax']);
         Route::delete('user/{id}', [UserController::class, 'destroy']);
+        Route::get('user/export_pdf', [UserController::class, 'export_pdf']); // export pdf
     });
 
     // Route untuk Level
@@ -61,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('level/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);
         Route::delete('level/{id}/delete_ajax', [LevelController::class, 'delete_ajax']);
         Route::delete('level/{id}', [LevelController::class, 'destroy']);
+        Route::get('level/export_pdf', [LevelController::class, 'export_pdf']); // export pdf
     });
 
     // Route untuk Kategori
@@ -79,6 +81,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('kategori/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']);
         Route::delete('kategori/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']);
         Route::delete('kategori/{id}', [KategoriController::class, 'destroy']);
+        Route::get('kategori/export_pdf', [KategoriController::class, 'export_pdf']); // export pdf
     });
 
     // Route untuk Supplier
@@ -97,6 +100,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('supplier/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']);
         Route::delete('supplier/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']);
         Route::delete('supplier/{id}', [SupplierController::class, 'destroy']);
+        Route::get('supplier/export_pdf', [SupplierController::class, 'export_pdf']); // export pdf
     });
 
     // Route untuk Barang

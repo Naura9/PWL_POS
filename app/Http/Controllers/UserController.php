@@ -2,7 +2,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\LevelModel;
+use App\Models\User;
 use App\Models\UserModel;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
@@ -320,5 +322,26 @@ class UserController extends Controller
 
             // Jika bukan request AJAX, arahkan kembali ke halaman sebelumnya
             return redirect('/');
+        }
+
+        public function export_pdf()
+        {
+            // Ambil data user yang akan diexport
+            $user = UserModel::select('level_id', 'username', 'nama')
+                ->orderBy('level_id')
+                ->with('level')
+                ->get();
+
+            // Load library PDF (Barryvdh\DomPDF\Facade\Pdf)
+            $pdf = Pdf::loadView('users.export_pdf', ['user' => $user]);
+
+            // Set ukuran kertas dan orientasi
+            $pdf->setPaper('a4', 'portrait');
+
+            // Set opsi jika ada gambar dari URL
+            $pdf->setOption('isRemoteEnabled', true);
+
+            // Render dan stream PDF ke browser
+            return $pdf->stream('Data_User_' . date('Y-m-d_H:i:s') . '.pdf');
         }
 }
